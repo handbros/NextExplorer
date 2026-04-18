@@ -5,6 +5,12 @@ export function useConfigErrorGate() {
   const features = useFeaturesStore();
   const configError = ref(null); // { mode: 'mismatch'|'error', expectedOrigin, requestOrigin }
 
+  const dismissConfigWarning = () => {
+    if (configError.value?.mode === 'mismatch') {
+      configError.value = null;
+    }
+  };
+
   onMounted(async () => {
     const requestOrigin = window.location.origin;
     try {
@@ -18,6 +24,5 @@ export function useConfigErrorGate() {
     }
   });
 
-  return { configError };
+  return { configError, dismissConfigWarning };
 }
-
